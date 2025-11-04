@@ -1,0 +1,16 @@
+[Unit]
+Description=Trovix CAPI RQ Worker
+After=network.target redis.service
+Requires=redis.service
+
+[Service]
+EnvironmentFile=/opt/trovix-capi/.env
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/trovix-capi
+ExecStart=/opt/trovix-capi/.venv/bin/rq worker trovix --url ${REDIS_URL}
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports: ["6379:6379"]
+
+  app:
+    build: ..
+    env_file:
+      - ../.env
+    volumes:
+      - ..:/app
+    depends_on:
+      - redis
+
+  worker:
+    build: ..
+    env_file:
+      - ../.env
+    command: bash -lc ". .venv/bin/activate || true; rq worker trovix --url ${REDIS_URL}"
+    volumes:
+      - ..:/app
+    depends_on:
+      - redis

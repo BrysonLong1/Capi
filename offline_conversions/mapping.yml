@@ -1,0 +1,5 @@
+order_id: order_id
+email: email_hash   # pre-hash if possible
+phone: phone_hash   # pre-hash if possible
+value: amount
+timestamp: purchased_at  # epoch seconds or ISO-8601

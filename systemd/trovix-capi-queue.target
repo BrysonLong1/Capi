@@ -1,0 +1,6 @@
+[Unit]
+Description=Trovix Queue Target
+After=redis.service
+
+[Install]
+WantedBy=multi-user.target

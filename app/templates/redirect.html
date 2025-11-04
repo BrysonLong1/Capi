@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Redirecting…</title>
+
+  <!-- GA4 (gtag) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ ga4_id }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ ga4_id }}', { 'send_page_view': false });
+
+    // client-side GA4 page_view + ic_bridge_hit
+    gtag('event', 'page_view', {
+      page_location: '{{ page_location }}',
+      page_referrer: '{{ page_referrer }}',
+      utm_source: '{{ utm_source }}',
+      utm_medium: '{{ utm_medium }}',
+      utm_campaign: '{{ utm_campaign }}',
+      utm_content: '{{ utm_content }}',
+      utm_term: '{{ utm_term }}',
+      fbclid: '{{ fbclid }}',
+      cid: '{{ cid_param }}',
+      evt: '{{ evt_param }}'
+    });
+
+    gtag('event', 'ic_bridge_hit', {
+      event_id: '{{ event_id }}',
+      final_url: '{{ final_url }}',
+      utm_source: '{{ utm_source }}',
+      utm_medium: '{{ utm_medium }}',
+      utm_campaign: '{{ utm_campaign }}',
+      utm_content: '{{ utm_content }}',
+      cid: '{{ cid_param }}',
+      evt: '{{ evt_param }}'
+    });
+  </script>
+
+  <!-- Meta Pixel (client-side) -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '{{ fb_pixel_id }}');
+    fbq('track', 'PageView');
+    fbq('track', 'InitiateCheckout', {event_id: '{{ event_id }}'});
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id={{ fb_pixel_id }}&ev=PageView&noscript=1"/>
+  </noscript>
+
+  <script>
+    // fast redirect (preserves session context after events fire)
+    setTimeout(function(){ window.location.replace('{{ final_url }}'); }, 250);
+  </script>
+
+  <noscript>
+    <meta http-equiv="refresh" content="1;url={{ final_url }}" />
+  </noscript>
+
+  <style>body{font-family:system-ui;margin:24px;color:#111}</style>
+</head>
+<body>
+  Redirecting… If not redirected, <a href="{{ final_url }}">click here</a>.
+</body>
+</html>
